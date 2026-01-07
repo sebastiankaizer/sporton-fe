@@ -72,4 +72,4 @@ Kontribusi sangat kami harapkan. Jika Anda menemukan _bug_ atau memiliki saran _
 
 ---
 
-Dikembangkan oleh Tim Sporton.
+Dikembangkan oleh Kevin.
