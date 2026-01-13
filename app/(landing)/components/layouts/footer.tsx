@@ -3,68 +3,42 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="mt-52 bg-dark-alternate text-white">
+    <footer className="bg-dark-alternate  text-white ">
       <div className="container mx-auto flex justify-between pt-14 pb-24">
-        <div className="w-[420px]">
+        <div className="w-105">
           <Image
             src="/images/logo-footer.svg"
             alt="logo sporton footer"
             width={187}
             height={44}
           />
-
-          <p className="mt-8 leading-relaxed text-white/90">
+          <p className="mt-8">
             Engineered for endurance and designed for speed. Experience gear
             that moves as fast as you do.
           </p>
         </div>
-
-        <div className="grid w-[420px] grid-cols-2">
-          <div className="flex flex-col gap-7">
-            <Link className="transition hover:text-white/80" href="#">
-              Home
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              Categories
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              Products
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              About Us
-            </Link>
+        <div className="w-105 grid grid-cols-2">
+          <div className="flex gap-7 flex-col">
+            <Link href="#">Home</Link>
+            <Link href="#">Categories</Link>
+            <Link href="#">Products</Link>
+            <Link href="/about-us">About Us</Link>
           </div>
-
-          <div className="flex flex-col gap-7">
-            <Link className="transition hover:text-white/80" href="#">
-              Instagram
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              Facebook
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              TikTok
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              YouTube
-            </Link>
+          <div className="flex gap-7 flex-col">
+            <Link href="#">Instagram</Link>
+            <Link href="#">Facebook</Link>
+            <Link href="#">TikTok</Link>
+            <Link href="#">YouTube</Link>
           </div>
         </div>
       </div>
+      <div className="border-t border-t-white/15">
+        <div className="container mx-auto py-6.5 flex justify-between">
+          <div>SportsOn © 2025 All Rights Reserverd.</div>
 
-      <div className="border-t border-white/15">
-        <div className="container mx-auto flex justify-between py-6">
-          <div className="text-white/80">
-            SportsOn © 2025 All Rights Reserved.
-          </div>
-
-          <div className="grid w-[420px] grid-cols-2">
-            <Link className="transition hover:text-white/80" href="#">
-              Privacy Policy
-            </Link>
-            <Link className="transition hover:text-white/80" href="#">
-              Terms &amp; Conditions
-            </Link>
+          <div className="grid grid-cols-2 w-105">
+            <Link href="#">Privacy Policy</Link>
+            <Link href="#">Terms Conditions</Link>
           </div>
         </div>
       </div>
