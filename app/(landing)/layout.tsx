@@ -5,6 +5,7 @@ import Header from "./components/layouts/header";
 import Footer from "./components/layouts/footer";
 
 const poppins = Poppins({
+  subsets: ["latin"], // Praktik terbaik untuk optimasi font
   variable: "--font-poppins",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
@@ -23,7 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} antialiased`}>
+      <body 
+        className={`${poppins.variable} antialiased`}
+        suppressHydrationWarning={true} // Perbaikan utama di sini
+      >
         <Header />
         {children}
         <Footer />

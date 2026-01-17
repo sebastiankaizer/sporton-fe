@@ -1,32 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import CardWithHeader from "../ui/card-with-header";
 import { CustomerInfo } from "@/app/hooks/use-cart-store";
 
 type TOrderInformation = {
-  formData?: CustomerInfo;
+  formData: CustomerInfo;
   setFormData: React.Dispatch<React.SetStateAction<CustomerInfo>>;
 };
 
 const OrderInformation = ({ formData, setFormData }: TOrderInformation) => {
-  const safeFormData: CustomerInfo = formData ?? {
-    customerName: "",
-    customerContact: null,
-    customerAddress: "",
-  };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-
-    if (name === "customerContact") {
-      const num = value === "" ? null : Number(value);
-      setFormData((prev) => ({ ...prev, customerContact: num }));
-      return;
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -39,11 +26,10 @@ const OrderInformation = ({ formData, setFormData }: TOrderInformation) => {
             placeholder="Type your full name"
             id="customerName"
             name="customerName"
-            value={safeFormData.customerName}
+            value={formData.customerName}
             onChange={handleInputChange}
           />
         </div>
-
         <div className="input-group">
           <label htmlFor="customerContact">Whatsapp Number</label>
           <input
@@ -51,11 +37,10 @@ const OrderInformation = ({ formData, setFormData }: TOrderInformation) => {
             placeholder="Type your whatsapp number"
             id="customerContact"
             name="customerContact"
-            value={safeFormData.customerContact ?? ""}
+            value={formData.customerContact ?? ""}
             onChange={handleInputChange}
           />
         </div>
-
         <div className="input-group">
           <label htmlFor="customerAddress">Shipping Address</label>
           <textarea
@@ -63,7 +48,7 @@ const OrderInformation = ({ formData, setFormData }: TOrderInformation) => {
             id="customerAddress"
             name="customerAddress"
             rows={7}
-            value={safeFormData.customerAddress}
+            value={formData.customerAddress}
             onChange={handleInputChange}
           />
         </div>
