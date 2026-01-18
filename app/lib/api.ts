@@ -13,7 +13,7 @@ export async function fetchAPI<T>(
       const errorData = await res.json();
       errorMessage = errorData.message || errorData.error || errorMessage;
     } catch (e) {
-      console.log(e);
+      console.log("Error parsing error response:", e);
     }
 
     throw new Error(errorMessage);

@@ -1,12 +1,12 @@
 "use client";
 
-import { FiCheckCircle, FiCreditCard } from "react-icons/fi";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FiCheckCircle } from "react-icons/fi";
 import CardWithHeader from "../ui/card-with-header";
 import FileUpload from "../ui/file-upload";
 import priceFormatter from "@/app/utils/price-formatter";
 import Button from "../ui/button";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useCartStore } from "@/app/hooks/use-cart-store";
 import { transactionCheckout } from "@/app/services/transaction.service";
 
@@ -47,7 +47,7 @@ const PaymentSteps = () => {
           items.map((item) => ({ productId: item._id, qty: item.qty }))
         )
       );
-      formData.append("totalPayment", totalPrice!.toString());
+      formData.append("totalPayment", totalPrice.toString());
 
       const res = await transactionCheckout(formData);
 
@@ -55,39 +55,40 @@ const PaymentSteps = () => {
       reset();
       push(`/order-status/${res._id}`);
     } catch (error) {
-      console.log(error);
+      console.error("Payment Confirmation Error:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
     <CardWithHeader title="Payment Steps">
       <div className="p-5">
-        <ol className="list-decimal text-xs pl-2 flex flex-col gap-4 mb-5">
+        <ol className="list-decimal text-xs pl-4 flex flex-col gap-4 mb-5 text-gray-700">
           <li>
-            Transfer the total amount of <b>Rp. 1.035.000</b> to your preferred
-            bank account listed under 'Payment Options' (BCA, Mandiri, or BTPN).
+            Transfer the total amount of <b>{priceFormatter(totalPrice)}</b> to
+            your preferred bank account listed under 'Payment Options'.
           </li>
           <li>
             After completing the transfer, <b>keep the payment receipt</b> or a
-            screenshot of the transfer confirmation. This will be needed for the
-            next step.
+            screenshot of the transfer confirmation.
           </li>
           <li>
             Upload the payment receipt/screenshot using the{" "}
-            <b>'Upload Receipt & Confirm'</b> button below to validate your
-            transaction.
+            <b>'Upload Receipt & Confirm'</b> button below.
           </li>
         </ol>
+
         <FileUpload onFileSelect={setFile} />
       </div>
 
       <div className="border-t border-gray-200 p-4">
         <div className="flex justify-between font-semibold">
           <div className="text-sm">Total</div>
-          <div className="text-primary text-xs">
+          <div className="text-primary text-sm">
             {priceFormatter(totalPrice)}
           </div>
         </div>
+
         <Button
           variant="dark"
           className="w-full mt-4"
