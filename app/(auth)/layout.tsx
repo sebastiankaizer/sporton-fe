@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "../globals.css";
 
 const poppins = Poppins({
+  subsets: ["latin"], // Tambahkan subsets agar lebih optimal
   variable: "--font-poppins",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
@@ -21,7 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} antialiased`}>{children}</body>
+      <body 
+        className={`${poppins.variable} antialiased`}
+        // Tambahkan ini untuk mencegah error mismatch akibat ekstensi browser
+        suppressHydrationWarning 
+      >
+        {children}
+      </body>
     </html>
   );
 }

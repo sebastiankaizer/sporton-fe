@@ -30,7 +30,6 @@ const OrderInformation = ({ formData, setFormData }: TOrderInformation) => {
             onChange={handleInputChange}
           />
         </div>
-
         <div className="input-group">
           <label htmlFor="customerContact">Whatsapp Number</label>
           <input
@@ -42,7 +41,6 @@ const OrderInformation = ({ formData, setFormData }: TOrderInformation) => {
             onChange={handleInputChange}
           />
         </div>
-
         <div className="input-group">
           <label htmlFor="customerAddress">Shipping Address</label>
           <textarea

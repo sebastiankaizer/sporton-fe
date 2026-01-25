@@ -1,53 +1,87 @@
 "use client";
 
-import { useState } from "react";
-import { FiPlus } from "react-icons/fi";
 import Button from "@/app/(landing)/components/ui/button";
+import { FiPlus } from "react-icons/fi";
 import TransactionTable from "../../components/transactions/transaction-table";
-import TransactionModal from "../../components/transactions/transaction-modal";
+import TransactiontModal from "../../components/transactions/transaction-modal";
+import { useEffect, useState } from "react";
+import { Transaction } from "@/app/types";
+import {
+  getAllTransactions,
+  updateTransaction,
+} from "@/app/services/transaction.service";
+import { toast } from "react-toastify";
 
 const TransactionManagement = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const handleOpenModal = () => {
-    setIsOpen(true);
+  const fetchTransactions = async () => {
+    try {
+      const data = await getAllTransactions();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Failed to fetch transactions", error);
+    }
   };
 
   const handleCloseModal = () => {
-    setIsOpen(false);
+    setIsModalOpen(false);
+    setSelectedTransaction(null);
   };
 
+  const handleViewDetails = (transaction: Transaction) => {
+    setIsModalOpen(true);
+    setSelectedTransaction(transaction);
+  };
+
+  const handleStatusChange = async (
+    id: string,
+    status: "paid" | "rejected",
+  ) => {
+    try {
+      const formData = new FormData();
+      formData.append("status", status);
+      await updateTransaction(id, formData);
+
+      toast.success("Transaction status updated");
+
+      await fetchTransactions();
+    } catch (error) {
+      console.error("Failed to update transaction status", error);
+      toast.error("Failed to update transaction status");
+    } finally {
+      setIsModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
   return (
-    <main className="p-6">
-      {/* Header Section */}
+    <div>
       <div className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="font-bold text-2xl text-gray-900">
-            Transaction Management
-          </h1>
-          <p className="text-gray-500">
-            Verify incoming payments and manage order statuses.
+          <h1 className="font-bold text-2xl">Transaction Management</h1>
+          <p className="opacity-50">
+            Verify incoming payments and manage orders.
           </p>
         </div>
-        
-        {/* Button tetap dipertahankan sesuai permintaan */}
-        <Button className="rounded-lg flex items-center gap-2" onClick={() => {}}>
-          <FiPlus size={20} />
-          Create Transaction
-        </Button>
       </div>
-
-      {/* Content Section */}
-      <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <TransactionTable onViewDetails={handleOpenModal} />
-      </section>
-
-      {/* Detail Modal */}
-      <TransactionModal 
-        isOpen={isOpen} 
-        onClose={handleCloseModal} 
+      <TransactionTable
+        transactions={transactions}
+        onViewDetails={handleViewDetails}
       />
-    </main>
+      <TransactiontModal
+        transaction={selectedTransaction}
+        onStatusChange={handleStatusChange}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </div>
   );
 };
 

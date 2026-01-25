@@ -1,6 +1,6 @@
 export async function fetchAPI<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<T> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
     ...options,
@@ -13,7 +13,7 @@ export async function fetchAPI<T>(
       const errorData = await res.json();
       errorMessage = errorData.message || errorData.error || errorMessage;
     } catch (e) {
-      console.log("Error parsing error response:", e);
+      console.log(e);
     }
 
     throw new Error(errorMessage);
@@ -24,5 +24,15 @@ export async function fetchAPI<T>(
 
 export function getImageUrl(path: string) {
   if (path.startsWith("http")) return path; // artinya url nya sudah valid
-  return `${process.env.NEXT_PUBLIC_API_ROOT}${path}`;
+  return `${process.env.NEXT_PUBLIC_API_ROOT}/${path}`;
+}
+
+export function getAuthHeaders() {
+  if (typeof window === "undefined") {
+    return { Authorization: "" };
+  }
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`,
+  };
 }
